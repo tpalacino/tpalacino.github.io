@@ -1,3 +1,13 @@
 .App {
-  text-align: center;
+  background-color: #8c6239 !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.App .NavBar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
 }
