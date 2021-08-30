@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '@fluentui/react';
+import { HashRouter } from 'react-router-dom';
+import { initializeIcons, ThemeProvider } from '@fluentui/react';
 import { createTheme } from "@fluentui/style-utilities";
 
 const appTheme = createTheme({
@@ -34,13 +34,15 @@ const appTheme = createTheme({
     },
 });
 
+initializeIcons();
+
 ReactDOM.render(
     <React.StrictMode>
-        <BrowserRouter>
+        <HashRouter>
             <ThemeProvider theme={appTheme}>
                 <App />
             </ThemeProvider>
-        </BrowserRouter>
+        </HashRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

@@ -1,0 +1,14 @@
+.Dock .ms-Button {
+  background-color: transparent;
+  padding: 0 !important;
+  border-radius: 0;
+  border: 0;
+  min-width: unset;
+  width: 48.75px;
+  height: 41px;
+}
+
+.Dock .ms-Button:hover,
+.Dock .ms-Button.active {
+  background-color: rgb(66, 66, 66);
+}

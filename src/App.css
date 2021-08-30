@@ -1,13 +1,18 @@
-.App {
+.App .AppContent {
   background-color: #8c6239 !important;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: auto;
+  margin-bottom: 41px;
 }
 
-.App .NavBar {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+.App .AppDock {
+  background-color: #000 !important;
+  position: absolute;
+  height: 41;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
