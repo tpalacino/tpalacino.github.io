@@ -1,6 +1,10 @@
 {
   "short_name": "Troy's Desktop",
   "name": "Troy's Desktop",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#8c6239",
+  "background_color": "#8c6239",
   "icons": [
     {
       "src": "favicon.ico",
@@ -17,9 +21,5 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }
