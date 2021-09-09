@@ -1,8 +1,7 @@
 const cacheName = "troys-desktop";
 const resourcesToPrecache = [
   "/",
-  "/index.html",
-  "/static/js"
+  "index.html"
 ];
 
 self.addEventListener("install", event => {
