@@ -10,25 +10,24 @@ interface IDockProps {
     onDockItemClicked: (item: IMenuItem) => void;
 }
 
-export default class Dock extends React.Component<IDockProps> {
-    public render() {
-        const { dockItems, onMenuClicked } = this.props;
-        return <>
-            <Stack className="Dock" horizontal tokens={{ childrenGap: 2 }}>
-                <StackItem>
-                    <DefaultButton iconProps={{ iconName: "WindowsLogo" }} onClick={onMenuClicked} title="Menu" />
-                </StackItem>
-                {dockItems.map(i => (<StackItem key={i.path}>
-                    <DefaultButton
-                        className={(window.location.hash === `#${i.path}`) ? "active" : ""}
-                        title={i.title}
-                        iconProps={{ iconName: i.iconName }}
-                        onClick={() => this.props.onDockItemClicked(i)} />
-                </StackItem>))}
-                <StackItem align="center" >
-                    <Clock />
-                </StackItem>
-            </Stack>
-        </>;
-    }
+const Dock: React.FunctionComponent<IDockProps> = ({ dockItems, onMenuClicked, onDockItemClicked }) => {
+    return <>
+        <Stack className="Dock" horizontal tokens={{ childrenGap: 2 }}>
+            <StackItem>
+                <DefaultButton iconProps={{ iconName: "WindowsLogo" }} onClick={onMenuClicked} title="Menu" />
+            </StackItem>
+            {dockItems.map(i => (<StackItem key={i.path}>
+                <DefaultButton
+                    className={(window.location.hash === `#${i.path}`) ? "active" : ""}
+                    title={i.title}
+                    iconProps={{ iconName: i.iconName }}
+                    onClick={() => onDockItemClicked(i)} />
+            </StackItem>))}
+            <StackItem align="center" >
+                <Clock />
+            </StackItem>
+        </Stack>
+    </>;
 }
+
+export default Dock;

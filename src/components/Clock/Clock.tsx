@@ -1,5 +1,6 @@
 import { Label } from '@fluentui/react';
-import React from 'react';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import './Clock.css';
 
 interface IClockState {
@@ -10,50 +11,44 @@ interface IClockState {
     part: "AM" | "PM";
 }
 
-export default class Clock extends React.Component<any, IClockState> {
-    private _UpdateTimeInterval: number = -1;
+let _UpdateTimeInterval: number = -1;
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            hasClockData: false,
-            hours: "00",
-            minutes: "00",
-            seconds: "00",
-            part: "AM"
+const Clock: React.FunctionComponent<any> = () => {
+    const [time, setTime] = useState<IClockState>({
+        hasClockData: false,
+        hours: "0",
+        minutes: "00",
+        seconds: "00",
+        part: "AM"
+    });
+
+    useEffect(() => {
+        updateTime();
+        _UpdateTimeInterval = window.setInterval(updateTime, 1000);
+        return () => {
+            if (_UpdateTimeInterval >= 0) {
+                window.clearInterval(_UpdateTimeInterval);
+            }
         };
-        this._getTime();
-    }
+    }, []);
 
-    public componentDidMount() {
-        this._UpdateTimeInterval = window.setInterval(this._getTime, 1000);
-    }
-
-    public componentWillUnmount() {
-        if (this._UpdateTimeInterval >= 0) {
-            window.clearInterval(this._UpdateTimeInterval);
-        }
-    }
-
-    private _getTime = () => {
-        this._updateTime(new Date());
-    }
-
-    private _updateTime = (now: Date) => {
+    let updateTime = () => {
+        const now = new Date();
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
-        this.setState({
+        setTime({
             hasClockData: true,
-            hours: (hours === 0 ? 12 : hours > 12 ? hours - 12 : hours).toString().padStart(2, "0"),
+            hours: (hours === 0 ? 12 : hours > 12 ? hours - 12 : hours).toString(),
             minutes: minutes.toString().padStart(2, "0"),
             seconds: seconds.toString().padStart(2, "0"),
             part: hours < 12 ? "AM" : "PM"
         })
     }
 
-    public render() {
-        const { hasClockData, hours, minutes, seconds, part } = this.state;
-        return hasClockData && <Label className="Clock">{hours}:{minutes}:{seconds} {part}</Label>;
-    }
+    return <>
+        {time.hasClockData && <Label className="Clock">{time.hours}:{time.minutes}:{time.seconds} {time.part}</Label>}
+    </>;
 }
+
+export default Clock;

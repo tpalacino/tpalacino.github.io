@@ -1,11 +1,16 @@
 {
   "short_name": "Troy's Desktop",
   "name": "Troy's Desktop",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#8c6239",
+  "background_color": "#8c6239",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/x-icon",
+      "purpose": "maskable"
     },
     {
       "src": "logo192.png",
@@ -17,9 +22,5 @@
       "type": "image/png",
       "sizes": "512x512"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  ]
 }

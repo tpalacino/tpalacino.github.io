@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PrimaryButton, Stack, TextField } from "@fluentui/react";
 import './UrlEncoder.css';
 
@@ -9,62 +9,45 @@ interface IUrlEncoderState {
     canDecode: boolean;
 }
 
-export default class UrlEncoder extends React.Component<any, IUrlEncoderState> {
-    public constructor(props: any) {
-        super(props);
-        this.state = {
-            encodedValue: '',
-            decodedValue: '',
-            canEncode: false,
-            canDecode: false
-        };
-    }
+const UrlEncoder: React.FunctionComponent<any> = () => {
 
-    private _onEncodedChanged = (e?: any, value?: string) => {
+    const [ state, setState ] = useState<IUrlEncoderState>({
+        encodedValue: '',
+        decodedValue: '',
+        canEncode: false,
+        canDecode: false
+     });
+
+    let _onEncodedChanged = (e?: any, value?: string) => {
         const newValue = value || '';
-        this.setState({
-            encodedValue: newValue,
-            canDecode: newValue.trim().length > 0
-        });
+        setState({ ...state, encodedValue: newValue, canDecode: newValue.trim().length > 0 });
     }
 
-    private _onDecodedChanged = (e?: any, value?: string) => {
+    let _onDecodedChanged = (e?: any, value?: string) => {
         const newValue = value || '';
-        this.setState({
-            decodedValue: newValue,
-            canEncode: newValue.trim().length > 0
-        });
+        setState({ ...state, decodedValue: newValue, canEncode: newValue.trim().length > 0 });
     }
 
-    private _Encode = () => {
-        const { decodedValue } = this.state;
-        this.setState({
-            encodedValue: encodeURI(decodedValue),
-            canEncode: true
-        });
+    let _Encode = () => {
+        setState({ ...state, encodedValue: encodeURI(state.decodedValue), canEncode: true });
     }
 
-    private _Decode = () => {
-        const { encodedValue } = this.state;
-        this.setState({
-            decodedValue: decodeURI(encodedValue),
-            canEncode: true
-        });
+    let _Decode = () => {
+        setState({ ...state, decodedValue: decodeURI(state.encodedValue), canEncode: true });
     }
 
-    public render() {
-        const { encodedValue, canEncode, decodedValue, canDecode } = this.state;
-        return <>
-            <Stack className="UrlEncoder" tokens={{ childrenGap: 20, padding: 20 }}>
-                <Stack horizontal grow tokens={{ childrenGap: 10 }}>
-                    <TextField label="Encoded" multiline value={encodedValue} rows={20} onChange={this._onEncodedChanged} />
-                    <TextField label="Decoded" multiline value={decodedValue} rows={20} onChange={this._onDecodedChanged} />
-                </Stack>
-                <Stack horizontal grow tokens={{ childrenGap: 10 }}>
-                    <PrimaryButton text="Encode" disabled={!canEncode} onClick={this._Encode} />
-                    <PrimaryButton text="Decode" disabled={!canDecode} onClick={this._Decode} />
-                </Stack>
+    return <>
+        <Stack className="UrlEncoder" tokens={{ childrenGap: 20, padding: 20 }}>
+            <Stack horizontal grow tokens={{ childrenGap: 10 }}>
+                <TextField label="Encoded" multiline value={state.encodedValue} rows={20} onChange={_onEncodedChanged} />
+                <TextField label="Decoded" multiline value={state.decodedValue} rows={20} onChange={_onDecodedChanged} />
             </Stack>
-        </>;
-    }
+            <Stack horizontal grow tokens={{ childrenGap: 10 }}>
+                <PrimaryButton text="Encode" disabled={!state.canEncode} onClick={_Encode} />
+                <PrimaryButton text="Decode" disabled={!state.canDecode} onClick={_Decode} />
+            </Stack>
+        </Stack>
+    </>;
 }
+
+export default UrlEncoder;

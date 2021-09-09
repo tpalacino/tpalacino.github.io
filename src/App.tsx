@@ -1,87 +1,93 @@
-import React from "react";
-import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
-import Dock from './components/Dock/Dock';
-import Menu, { IMenuItem } from './components/Menu/Menu';
-import "./App.css";
+import React, { useEffect, useState } from "react";
 import { Route, RouteComponentProps, Switch } from "react-router";
 import { Stack, StackItem } from "@fluentui/react";
-
-interface IAppState {
-    isMenuOpen: boolean;
-}
+import "./App.css";
+import Menu, { IMenuItem } from './components/Menu/Menu';
+import Dock from './components/Dock/Dock';
+import Home from "./pages/Home/Home";
+import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
+import Regex from "./pages/Regex/Regex";
 
 interface IAppItem extends IMenuItem {
     component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
 }
 
-export default class App extends React.Component<any, IAppState> {
-    private _AppItems: IAppItem[];
-    private _DismissMenu: boolean = false;
+const App: React.FunctionComponent = () => {
+    let _DismissMenu: boolean = false;
+    let _AppItems: IAppItem[] = [
+        {
+            title: "Home",
+            path: "/",
+            iconName: "Home",
+            component: Home
+        },
+        {
+            title: "URL Encoder",
+            path: "/tools/url-encoder",
+            iconName: "ChangeEntitlements",
+            component: UrlEncoder
+        },
+        {
+            title: "Regex Tester",
+            path: "/tools/regex-tester",
+            iconName: "TestBeaker",
+            component: Regex
+        }
+    ];
 
-    public constructor(props: any) {
-        super(props);
-        window.addEventListener("mousedown", this._onMouseDown);
-        window.addEventListener("mouseup", this._onMouseUp);
-        this._AppItems = [
-            {
-                title: "Home",
-                path: "/",
-                iconName: "Home",
-                component: () => (<></>)
-            },
-            {
-                title: "URL Encoder",
-                path: "/tools/url-encoder",
-                iconName: "ChangeEntitlements",
-                component: UrlEncoder
-            }
-        ];
-        this.state = {
-            isMenuOpen: false
-        };
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    let _onMouseDown = () => {
+        _DismissMenu = isMenuOpen;
     }
 
-    private _onMouseDown = () => {
-        this._DismissMenu = this.state.isMenuOpen;
-    }
-
-    private _onMouseUp = () => {
+    let _onMouseUp = () => {
         window.setTimeout(() => {
-            if (this._DismissMenu) {
-                this._DismissMenu = false;
-                this.setState({ isMenuOpen: false })
+            if (_DismissMenu) {
+                _DismissMenu = false;
+                setIsMenuOpen(false);
             }
         }, 10);
     }
 
-    private _onMenuClicked = () => {
-        this.setState({ isMenuOpen: !this.state.isMenuOpen });
+    let _onMenuClicked = () => {
+        setIsMenuOpen(!isMenuOpen);
     }
 
-    private _onDockItemClicked = (item: IMenuItem) => {
+    let _onDockItemClicked = (item: IMenuItem) => {
         window.location.hash = `#${item.path}`;
-        if (this.state.isMenuOpen) {
-            this.setState({ isMenuOpen: false });
+        if (isMenuOpen) {
+            setIsMenuOpen(false);
         }
     }
 
-    public render() {
-        return <div className="App">
-            <Stack verticalFill>
-                <StackItem className="AppContent" grow>
-                    <Switch>
-                        {this._AppItems.map(i => {
-                            return <Route key={i.path} exact path={i.path} component={i.component} />;
-                        })}
-                    </Switch>
-                </StackItem>
-                {this.state.isMenuOpen && <Menu MenuItems={this._AppItems} onDockItemClicked={this._onDockItemClicked} />}
-                <StackItem className="AppDock">
-                    <Route path="*" render={() => (<>
-                        <Dock dockItems={this._AppItems} onMenuClicked={this._onMenuClicked} onDockItemClicked={this._onDockItemClicked} />
-                    </>)} />
-                </StackItem>
-            </Stack>
-        </div>;
-    }
+    useEffect(() => {
+        window.addEventListener("mousedown", _onMouseDown);
+        window.addEventListener("mouseup", _onMouseUp);
+
+        return () => {
+            window.removeEventListener("mousedown", _onMouseDown);
+            window.removeEventListener("mouseup", _onMouseUp);
+        };
+    })
+
+    return <div className="App">
+        <Stack verticalFill>
+            <StackItem className="AppContent" grow>
+                <Switch>
+                    {_AppItems.map(i => {
+                        return <Route key={i.path} exact path={i.path} component={i.component} />;
+                    })}
+                </Switch>
+            </StackItem>
+            {isMenuOpen && <Menu menuItems={_AppItems} onDockItemClicked={_onDockItemClicked} />}
+            <StackItem className="AppDock">
+                <Route path="*" render={() => (<>
+                    <Dock dockItems={_AppItems} onMenuClicked={_onMenuClicked} onDockItemClicked={_onDockItemClicked} />
+                </>)} />
+            </StackItem>
+        </Stack>
+    </div>;
 }
+
+export default App;

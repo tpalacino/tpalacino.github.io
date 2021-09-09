@@ -3,7 +3,7 @@ import React from 'react';
 import './Menu.css';
 
 interface IMenuProps {
-    MenuItems: IMenuItem[];
+    menuItems: IMenuItem[];
     onDockItemClicked: (item: IMenuItem) => void;
 }
 
@@ -13,15 +13,15 @@ export interface IMenuItem {
     path: string;
 }
 
-export default class Menu extends React.Component<IMenuProps> {
-    public render() {
-        return <Stack className="Menu">
-            {this.props.MenuItems.map(i => (<>
-                <StackItem className="MenuItem" key={i.path} grow>
-                    <DefaultButton iconProps={{ iconName: i.iconName }} title={i.title} onClick={() => this.props.onDockItemClicked(i)}>{i.title}</DefaultButton>
-                </StackItem>
-                <div className="MenuItemSeparator"/>
-            </>))}
-        </Stack>;
-    }
+const Menu: React.FunctionComponent<IMenuProps> = ({ menuItems: MenuItems, onDockItemClicked }) => {
+    return <Stack className="Menu">
+        {MenuItems.map(i => (<>
+            <StackItem className="MenuItem" key={i.path} grow>
+                <DefaultButton iconProps={{ iconName: i.iconName }} title={i.title} onClick={() => onDockItemClicked(i)}>{i.title}</DefaultButton>
+            </StackItem>
+            <div className="MenuItemSeparator" />
+        </>))}
+    </Stack>;
 }
+
+export default Menu;
