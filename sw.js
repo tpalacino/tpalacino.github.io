@@ -1,10 +1,10 @@
 const cacheName = "troys-desktop";
 const resourcesToPrecache = [
   "/",
-  "index.html",
-  "static/js/bundle.js",
-  "static/js/vendors~main.chunk.js",
-  "static/js/main.chunk.js"
+  "/index.html",
+  "/static/js/bundle.js",
+  "/static/js/vendors~main.chunk.js",
+  "/static/js/main.chunk.js"
 ];
 
 self.addEventListener("install", event => {
