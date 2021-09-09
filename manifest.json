@@ -1,7 +1,7 @@
 {
   "short_name": "Troy's Desktop",
   "name": "Troy's Desktop",
-  "start_url": ".",
+  "start_url": "index.html",
   "display": "standalone",
   "theme_color": "#8c6239",
   "background_color": "#8c6239",
