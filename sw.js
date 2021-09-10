@@ -20,7 +20,7 @@ try {
             // Manual injection point for manifest files.
             // All assets under build/ and 5MB sizes are precached.
             try {
-                workbox.precaching.precacheAndRoute([{"revision":"d0eb6b72f85ec5c01ce0f47afe61d2be","url":"index.html"},{"revision":"da9fd36499958b244f0b423960d3e4d4","url":"logo192.png"},{"revision":"8cd820b49afd8001abf6f94e40481cb6","url":"logo512.png"},{"revision":"ec540491cc4807111affcc3be79bd18e","url":"static/css/main.88cdb182.chunk.css"},{"revision":"f6c45306aaa004cc5bda6bd4bda0d688","url":"static/js/2.a89ae75b.chunk.js"},{"revision":"fc705197b9c0e985917471639cfe530d","url":"static/js/3.d0357653.chunk.js"},{"revision":"b6e781cbce8ce45077bd0b0bf746882a","url":"static/js/main.f96792e9.chunk.js"},{"revision":"b9373a04b5ce59c49f6f8f1e1fd6b17d","url":"static/js/runtime-main.36b5836a.js"}]);
+                workbox.precaching.precacheAndRoute([{"revision":"ac8a2c772bac8854123f16134bfc5d1b","url":"index.html"},{"revision":"da9fd36499958b244f0b423960d3e4d4","url":"logo192.png"},{"revision":"8cd820b49afd8001abf6f94e40481cb6","url":"logo512.png"},{"revision":"38943ca190e1131db3e0946c63c8fc47","url":"static/css/main.fd8c58c9.chunk.css"},{"revision":"52e5ffa6f87a8d0b57705fe4633a6571","url":"static/js/2.0b2d6e93.chunk.js"},{"revision":"69fea11bfdc667f2ae33e202f6b0cdc9","url":"static/js/3.09bd8990.chunk.js"},{"revision":"1cd8b721c3b60cda3d18def86f5ed086","url":"static/js/main.201541a3.chunk.js"},{"revision":"3cb7eddd0a15b17a96712063045b06dc","url":"static/js/runtime-main.ec0f1d2a.js"}]);
             }
             catch (e) {
                 console.error(e);
