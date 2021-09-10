@@ -1,50 +1,149 @@
 import React, { useState } from "react";
-import { PrimaryButton, Stack, TextField } from "@fluentui/react";
-import './UrlEncoder.css';
+import { Dropdown, IDropdownOption, PrimaryButton, Stack, TextField } from "@fluentui/react";
+
+type UrlEncoderMode = 'encode' | 'encodeComponent' | 'decode' | 'decodeComponent';
 
 interface IUrlEncoderState {
-    encodedValue: string;
-    decodedValue: string;
-    canEncode: boolean;
-    canDecode: boolean;
+    mode: UrlEncoderMode;
+    encodeValue: string;
+    decodeValue: string;
+    results: string;
+    canProcess: boolean;
 }
 
 const UrlEncoder: React.FunctionComponent<any> = () => {
 
-    const [ state, setState ] = useState<IUrlEncoderState>({
-        encodedValue: '',
-        decodedValue: '',
-        canEncode: false,
-        canDecode: false
-     });
+    const [state, setState] = useState<IUrlEncoderState>({
+        mode: 'encode',
+        encodeValue: '',
+        decodeValue: '',
+        results: '',
+        canProcess: false
+    });
+
+    let _canProcess = (mode: UrlEncoderMode, encodeValue?: string, decodeValue?: string): boolean => {
+        let retVal = false;
+        switch (mode) {
+            case "encode":
+            case "encodeComponent": {
+                retVal = encodeValue ? encodeValue.trim().length > 0 : false;
+                break;
+            }
+            case "decode":
+            case "decodeComponent": {
+                retVal = decodeValue ? decodeValue.trim().length > 0 : false;
+                break;
+            }
+        }
+        return retVal;
+    }
 
     let _onEncodedChanged = (e?: any, value?: string) => {
         const newValue = value || '';
-        setState({ ...state, encodedValue: newValue, canDecode: newValue.trim().length > 0 });
+        setState({
+            ...state,
+            encodeValue: newValue,
+            canProcess: _canProcess(state.mode, newValue, state.decodeValue),
+            results: ''
+        });
     }
 
     let _onDecodedChanged = (e?: any, value?: string) => {
         const newValue = value || '';
-        setState({ ...state, decodedValue: newValue, canEncode: newValue.trim().length > 0 });
+        setState({
+            ...state,
+            decodeValue: newValue,
+            canProcess: _canProcess(state.mode, state.encodeValue, newValue),
+            results: ''
+        });
     }
 
-    let _Encode = () => {
-        setState({ ...state, encodedValue: encodeURI(state.decodedValue), canEncode: true });
+    let _onModeChanged = (e?: any, item?: IDropdownOption) => {
+        let newMode = state.mode;
+        if (item && item.key) {
+            newMode = item.key as UrlEncoderMode;
+        }
+        setState({
+            ...state,
+            mode: newMode,
+            canProcess: _canProcess(newMode, state.encodeValue, state.decodeValue),
+            results: ''
+        });
     }
 
-    let _Decode = () => {
-        setState({ ...state, decodedValue: decodeURI(state.encodedValue), canEncode: true });
+    let _Process = () => {
+        if (state.canProcess) {
+            let results: string = '';
+            try {
+                switch (state.mode) {
+                    case "encode": {
+                        results = encodeURI(state.encodeValue);
+                        break;
+                    }
+                    case "encodeComponent": {
+                        results = encodeURIComponent(state.encodeValue);
+                        break;
+                    }
+                    case "decode": {
+                        results = decodeURI(state.decodeValue);
+                        break;
+                    }
+                    case "decodeComponent": {
+                        results = decodeURIComponent(state.decodeValue);
+                        break;
+                    }
+                }
+
+            }
+            catch (err) {
+                const error = err as any;
+                if (error && error.message) {
+                    results = error.message;
+                }
+                else {
+                    results = `${error}`;
+                }
+            }
+            setState({
+                ...state,
+                results: results ? results : ''
+            });
+        }
     }
 
     return <>
         <Stack className="UrlEncoder" tokens={{ childrenGap: 20, padding: 20 }}>
+            {(state.mode === 'encode' || state.mode === 'encodeComponent') && <>
+                <TextField label="Encode" multiline value={state.encodeValue} rows={10} onChange={_onEncodedChanged} />
+            </>}
+            {(state.mode === 'decode' || state.mode === 'decodeComponent') && <>
+                <TextField label="Decode" multiline value={state.decodeValue} rows={10} onChange={_onDecodedChanged} />
+            </>}
+            <TextField label="Results" multiline value={state.results} rows={10} readOnly />
             <Stack horizontal grow tokens={{ childrenGap: 10 }}>
-                <TextField label="Encoded" multiline value={state.encodedValue} rows={20} onChange={_onEncodedChanged} />
-                <TextField label="Decoded" multiline value={state.decodedValue} rows={20} onChange={_onDecodedChanged} />
-            </Stack>
-            <Stack horizontal grow tokens={{ childrenGap: 10 }}>
-                <PrimaryButton text="Encode" disabled={!state.canEncode} onClick={_Encode} />
-                <PrimaryButton text="Decode" disabled={!state.canDecode} onClick={_Decode} />
+                <Dropdown
+                    dropdownWidth='auto'
+                    selectedKey={state.mode}
+                    onChange={_onModeChanged}
+                    options={[
+                        {
+                            key: "encode",
+                            text: "Encode URI"
+                        },
+                        {
+                            key: "encodeComponent",
+                            text: "Encode URI Component"
+                        },
+                        {
+                            key: "decode",
+                            text: "Decode URI"
+                        },
+                        {
+                            key: "decodeComponent",
+                            text: "Decode URI Component"
+                        }
+                    ]} />
+                <PrimaryButton text="Process" disabled={!state.canProcess} onClick={_Process} />
             </Stack>
         </Stack>
     </>;
