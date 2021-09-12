@@ -16,7 +16,8 @@ const Dock: React.FunctionComponent<IDockProps> = ({ dockItems, onMenuClicked, o
             <StackItem>
                 <DefaultButton iconProps={{ iconName: "WindowsLogo" }} onClick={onMenuClicked} title="Menu" />
             </StackItem>
-            {dockItems.map(i => (<StackItem key={i.path}>
+
+            {dockItems.length > 0 && dockItems.map(i => (<StackItem key={i.path}>
                 <DefaultButton
                     className={(window.location.hash === `#${i.path}`) ? "active" : ""}
                     title={i.title}

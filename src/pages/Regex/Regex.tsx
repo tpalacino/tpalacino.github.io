@@ -119,7 +119,7 @@ const Regex: React.FunctionComponent = () => {
     }
 
     return <>
-        <Stack className="Regex" tokens={{ childrenGap: 20, padding: 20 }}>
+        <Stack className="Regex" tokens={{ childrenGap: 20 }}>
             <TextField label="Pattern" multiline value={state.pattern} rows={5} onChange={_onPatternChanged} />
             <TextField label="Input" multiline value={state.input} rows={5} onChange={_onInputChanged} />
             {state.mode === 'replace' && <>

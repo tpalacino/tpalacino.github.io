@@ -1,18 +1,17 @@
-.App .AppContent {
+.App {
   background-color: #8c6239 !important;
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  margin-bottom: 41px;
+}
+
+.App .AppContent{
+  padding: 20px;
+  overflow: auto;
 }
 
 .App .AppDock {
   background-color: #000 !important;
-  position: absolute;
-  height: 41;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }

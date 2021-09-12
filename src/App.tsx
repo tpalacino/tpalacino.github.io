@@ -5,6 +5,7 @@ import "./App.css";
 import Menu, { IMenuItem } from './components/Menu/Menu';
 import Dock from './components/Dock/Dock';
 import Home from "./pages/Home/Home";
+import Feedback from "./pages/Feedback/Feedback";
 import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
 import Regex from "./pages/Regex/Regex";
 
@@ -19,19 +20,33 @@ const App: React.FunctionComponent = () => {
             title: "Home",
             path: "/",
             iconName: "Home",
-            component: Home
+            component: Home,
+            showInDock: true,
+            showInMenu: false
+        },
+        {
+            title: "Feedback",
+            path: "/tools/feedback",
+            iconName: "Feedback",
+            component: Feedback,
+            showInDock: false,
+            showInMenu: true
         },
         {
             title: "URL Encoder",
             path: "/tools/url-encoder",
             iconName: "ChangeEntitlements",
-            component: UrlEncoder
+            component: UrlEncoder,
+            showInDock: true,
+            showInMenu: true
         },
         {
             title: "Regex Tester",
             path: "/tools/regex-tester",
             iconName: "TestBeaker",
-            component: Regex
+            component: Regex,
+            showInDock: true,
+            showInMenu: true
         }
     ];
 
@@ -71,8 +86,8 @@ const App: React.FunctionComponent = () => {
         };
     })
 
-    return <div className="App">
-        <Stack verticalFill>
+    return <>
+        <Stack className="App" verticalFill>
             <StackItem className="AppContent" grow>
                 <Switch>
                     {_AppItems.map(i => {
@@ -80,14 +95,14 @@ const App: React.FunctionComponent = () => {
                     })}
                 </Switch>
             </StackItem>
-            {isMenuOpen && <Menu menuItems={_AppItems} onDockItemClicked={_onDockItemClicked} />}
-            <StackItem className="AppDock">
+            {isMenuOpen && <Menu menuItems={_AppItems.filter(x => x.showInMenu)} onDockItemClicked={_onDockItemClicked} />}
+            <StackItem className="AppDock" shrink>
                 <Route path="*" render={() => (<>
-                    <Dock dockItems={_AppItems} onMenuClicked={_onMenuClicked} onDockItemClicked={_onDockItemClicked} />
+                    <Dock dockItems={_AppItems.filter(x => x.showInDock)} onMenuClicked={_onMenuClicked} onDockItemClicked={_onDockItemClicked} />
                 </>)} />
             </StackItem>
         </Stack>
-    </div>;
+    </>;
 }
 
 export default App;
