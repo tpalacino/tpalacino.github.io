@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { HashRouter } from 'react-router-dom';
 import { initializeIcons, ThemeProvider } from '@fluentui/react';
 import { createTheme } from "@fluentui/style-utilities";
 
@@ -38,11 +37,9 @@ initializeIcons();
 
 ReactDOM.render(
     <React.StrictMode>
-        <HashRouter>
-            <ThemeProvider theme={appTheme}>
-                <App />
-            </ThemeProvider>
-        </HashRouter>
+        <ThemeProvider theme={appTheme}>
+            <App />
+        </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );

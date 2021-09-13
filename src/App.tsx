@@ -8,9 +8,17 @@ import Home from "./pages/Home/Home";
 import Feedback from "./pages/Feedback/Feedback";
 import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
 import Regex from "./pages/Regex/Regex";
+import { BrowserRouter } from "react-router-dom";
 
 interface IAppItem extends IMenuItem {
     component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
+}
+
+const Title: React.FunctionComponent<{ item: IAppItem }> = ({ item }) => {
+    useEffect(() => {
+        document.title = `Troy's Desktop - ${item.title}`;
+    }, [item])
+    return React.createElement(item.component);
 }
 
 const App: React.FunctionComponent = () => {
@@ -69,8 +77,7 @@ const App: React.FunctionComponent = () => {
         setIsMenuOpen(!isMenuOpen);
     }
 
-    let _onDockItemClicked = (item: IMenuItem) => {
-        window.location.hash = `#${item.path}`;
+    let _onAppItemClicked = () => {
         if (isMenuOpen) {
             setIsMenuOpen(false);
         }
@@ -87,21 +94,23 @@ const App: React.FunctionComponent = () => {
     })
 
     return <>
-        <Stack className="App" verticalFill>
-            <StackItem className="AppContent" grow>
-                <Switch>
-                    {_AppItems.map(i => {
-                        return <Route key={i.path} exact path={i.path} component={i.component} />;
-                    })}
-                </Switch>
-            </StackItem>
-            {isMenuOpen && <Menu menuItems={_AppItems.filter(x => x.showInMenu)} onDockItemClicked={_onDockItemClicked} />}
-            <StackItem className="AppDock" shrink>
-                <Route path="*" render={() => (<>
-                    <Dock dockItems={_AppItems.filter(x => x.showInDock)} onMenuClicked={_onMenuClicked} onDockItemClicked={_onDockItemClicked} />
-                </>)} />
-            </StackItem>
-        </Stack>
+        <BrowserRouter>
+            <Stack className="App" verticalFill>
+                <StackItem className="AppContent" grow>
+                    <Switch>
+                        {_AppItems.map(i => {
+                            return <Route key={i.path} exact path={i.path} component={() => <Title item={i} />} />;
+                        })}
+                    </Switch>
+                </StackItem>
+                {isMenuOpen && <Menu menuItems={_AppItems.filter(x => x.showInMenu)} onMenuItemClicked={_onAppItemClicked} />}
+                <StackItem className="AppDock" shrink>
+                    <Route path="*" render={() => (<>
+                        <Dock dockItems={_AppItems.filter(x => x.showInDock)} onMenuClicked={_onMenuClicked} onMenuItemClicked={_onAppItemClicked} />
+                    </>)} />
+                </StackItem>
+            </Stack>
+        </BrowserRouter>
     </>;
 }
 

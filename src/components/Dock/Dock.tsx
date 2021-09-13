@@ -3,14 +3,15 @@ import './Dock.css';
 import { DefaultButton, Stack, StackItem } from '@fluentui/react';
 import { IMenuItem } from '../Menu/Menu';
 import Clock from '../Clock/Clock';
+import { Link } from 'react-router-dom';
 
 interface IDockProps {
     dockItems: IMenuItem[];
     onMenuClicked: () => void;
-    onDockItemClicked: (item: IMenuItem) => void;
+    onMenuItemClicked: () => void;
 }
 
-const Dock: React.FunctionComponent<IDockProps> = ({ dockItems, onMenuClicked, onDockItemClicked }) => {
+const Dock: React.FunctionComponent<IDockProps> = ({ dockItems, onMenuClicked, onMenuItemClicked }) => {
     return <>
         <Stack className="Dock" horizontal tokens={{ childrenGap: 2 }}>
             <StackItem>
@@ -18,11 +19,13 @@ const Dock: React.FunctionComponent<IDockProps> = ({ dockItems, onMenuClicked, o
             </StackItem>
 
             {dockItems.length > 0 && dockItems.map(i => (<StackItem key={i.path}>
-                <DefaultButton
-                    className={(window.location.hash === `#${i.path}`) ? "active" : ""}
-                    title={i.title}
-                    iconProps={{ iconName: i.iconName }}
-                    onClick={() => onDockItemClicked(i)} />
+                <Link to={i.path}>
+                    <DefaultButton
+                        className={(window.location.pathname === `${i.path}`) ? "active" : ""}
+                        title={i.title}
+                        iconProps={{ iconName: i.iconName }}
+                        onClick={() => onMenuItemClicked()} />
+                </Link>
             </StackItem>))}
             <StackItem align="center" >
                 <Clock />

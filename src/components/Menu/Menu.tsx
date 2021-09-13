@@ -1,10 +1,11 @@
 import { DefaultButton, Stack, StackItem, Text } from '@fluentui/react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Menu.css';
 
 interface IMenuProps {
     menuItems: IMenuItem[];
-    onDockItemClicked: (item: IMenuItem) => void;
+    onMenuItemClicked: () => void;
 }
 
 export interface IMenuItem {
@@ -15,11 +16,13 @@ export interface IMenuItem {
     showInMenu: boolean;
 }
 
-const Menu: React.FunctionComponent<IMenuProps> = ({ menuItems: MenuItems, onDockItemClicked }) => {
+const Menu: React.FunctionComponent<IMenuProps> = ({ menuItems, onMenuItemClicked }) => {
     return <Stack className="Menu">
-        {MenuItems.length > 0 ? MenuItems.map(i => (<>
+        {menuItems.length > 0 ? menuItems.map(i => (<>
             <StackItem className="MenuItem" key={i.path} grow>
-                <DefaultButton iconProps={{ iconName: i.iconName }} title={i.title} onClick={() => onDockItemClicked(i)}>{i.title}</DefaultButton>
+                <Link to={i.path}>
+                    <DefaultButton iconProps={{ iconName: i.iconName }} title={i.title} onClick={() => onMenuItemClicked()}>{i.title}</DefaultButton>
+                </Link>
             </StackItem>
             <div className="MenuItemSeparator" />
         </>)) : <>
