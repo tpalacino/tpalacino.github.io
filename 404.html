@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Troy's Desktop - Page Not Found</title>
+    <script type="text/javascript">
+      var l = window.location;
+      const authority = `${l.protocol}//${l.hostname}${(l.port ? ':' + l.port : '')}`;
+      l.replace(`${authority}?nav=${encodeURI(l.toString().substr(authority.length))}`);
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
