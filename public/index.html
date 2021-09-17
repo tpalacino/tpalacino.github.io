@@ -11,6 +11,12 @@
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <title>Troy's Desktop</title>
+  <script type="text/javascript">
+    var m = /\?nav=(?<nav>[^&]+)/ig.exec(window.location);
+      if (m && m.groups && m.groups.nav) {
+        window.history.replaceState(null, null, decodeURIComponent(m.groups.nav)); 
+      }
+  </script>
 </head>
 
 <body>

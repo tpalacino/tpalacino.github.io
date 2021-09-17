@@ -1,29 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { Route, RouteComponentProps, Switch } from "react-router";
-import { Stack, StackItem } from "@fluentui/react";
+import { Route, Switch } from "react-router";
+import { Stack, StackItem, ThemeProvider } from "@fluentui/react";
 import "./App.css";
-import Menu, { IMenuItem } from './components/Menu/Menu';
+import { initializeIcons } from '@fluentui/react';
+import { createTheme } from "@fluentui/style-utilities";
+import Title, { IAppRouteItem } from './components/Title/Title';
+import Menu from './components/Menu/Menu';
 import Dock from './components/Dock/Dock';
 import Home from "./pages/Home/Home";
 import Feedback from "./pages/Feedback/Feedback";
 import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
 import Regex from "./pages/Regex/Regex";
-import { BrowserRouter } from "react-router-dom";
+import NotFound from "./pages/NotFound/NotFound";
 
-interface IAppItem extends IMenuItem {
-    component: React.ComponentType<RouteComponentProps<any>> | React.ComponentType<any>;
-}
+const appTheme = createTheme({
+    palette: {
+        themePrimary: "#a8a8a8",
+        themeLighterAlt: "#070707",
+        themeLighter: "#1b1b1b",
+        themeLight: "#323232",
+        themeTertiary: "#656565",
+        themeSecondary: "#949494",
+        themeDarkAlt: "#b1b1b1",
+        themeDark: "#bdbdbd",
+        themeDarker: "#cecece",
+        neutralLighterAlt: "#4a4a4a",
+        neutralLighter: "#525252",
+        neutralLight: "#5e5e5e",
+        neutralQuaternaryAlt: "#656565",
+        neutralQuaternary: "#6b6b6b",
+        neutralTertiaryAlt: "#848484",
+        neutralTertiary: "#c8c8c8",
+        neutralSecondary: "#d0d0d0",
+        neutralPrimaryAlt: "#dadada",
+        neutralPrimary: "#ffffff",
+        neutralDark: "#f4f4f4",
+        black: "#f8f8f8",
+        white: "#424242",
+    },
+});
 
-const Title: React.FunctionComponent<{ item: IAppItem }> = ({ item }) => {
-    useEffect(() => {
-        document.title = `Troy's Desktop - ${item.title}`;
-    }, [item])
-    return React.createElement(item.component);
-}
+initializeIcons();
 
 const App: React.FunctionComponent = () => {
     let _DismissMenu: boolean = false;
-    let _AppItems: IAppItem[] = [
+    const _AppItems: IAppRouteItem[] = [
         {
             title: "Home",
             path: "/",
@@ -55,6 +76,14 @@ const App: React.FunctionComponent = () => {
             component: Regex,
             showInDock: true,
             showInMenu: true
+        },
+        {
+            title: "Page Not Found",
+            path: "",
+            iconName: "",
+            component: NotFound,
+            showInDock: false,
+            showInMenu: false
         }
     ];
 
@@ -94,23 +123,24 @@ const App: React.FunctionComponent = () => {
     })
 
     return <>
-        <BrowserRouter>
+        <ThemeProvider theme={appTheme}>
             <Stack className="App" verticalFill>
                 <StackItem className="AppContent" grow>
                     <Switch>
                         {_AppItems.map(i => {
-                            return <Route key={i.path} exact path={i.path} component={() => <Title item={i} />} />;
+                            const hasPath = i.path.length > 0;
+                            return <Route key={i.path} exact={hasPath} path={hasPath ? i.path : undefined} component={() => <Title item={i} />} />;
                         })}
                     </Switch>
                 </StackItem>
-                {isMenuOpen && <Menu menuItems={_AppItems.filter(x => x.showInMenu)} onMenuItemClicked={_onAppItemClicked} />}
+                <Menu isOpen={isMenuOpen} menuItems={_AppItems.filter(x => x.showInMenu)} onMenuItemClicked={_onAppItemClicked} />
                 <StackItem className="AppDock" shrink>
                     <Route path="*" render={() => (<>
                         <Dock dockItems={_AppItems.filter(x => x.showInDock)} onMenuClicked={_onMenuClicked} onMenuItemClicked={_onAppItemClicked} />
                     </>)} />
                 </StackItem>
             </Stack>
-        </BrowserRouter>
+        </ThemeProvider>
     </>;
 }
 
