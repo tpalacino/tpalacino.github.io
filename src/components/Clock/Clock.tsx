@@ -1,7 +1,8 @@
 import { Label } from '@fluentui/react';
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Clock.css';
+import timeService from '../../services/TimeService';
 
 interface IClockState {
     hasClockData: boolean;
@@ -10,8 +11,6 @@ interface IClockState {
     seconds: string;
     part: "AM" | "PM";
 }
-
-let _UpdateTimeInterval: number = -1;
 
 const Clock: React.FunctionComponent<any> = () => {
     const [time, setTime] = useState<IClockState>({
@@ -23,17 +22,15 @@ const Clock: React.FunctionComponent<any> = () => {
     });
 
     useEffect(() => {
-        updateTime();
-        _UpdateTimeInterval = window.setInterval(updateTime, 1000);
+        let subscriptionId = timeService.subscribe('Second', updateTime);
         return () => {
-            if (_UpdateTimeInterval >= 0) {
-                window.clearInterval(_UpdateTimeInterval);
+            if (subscriptionId) {
+                timeService.unsubscribe('Second', subscriptionId);
             }
         };
     }, []);
 
-    let updateTime = () => {
-        const now = new Date();
+    let updateTime = (now: Date) => {
         const hours = now.getHours();
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();

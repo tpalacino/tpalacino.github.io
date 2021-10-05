@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown, IDropdownOption, PrimaryButton, Stack, TextField } from "@fluentui/react";
 
-type UrlEncoderMode = 'decode' | 'decodeComponent' | 'encode' | 'encodeComponent';
+type UrlEncoderMode = 'decodeComponent' | 'decode' | 'encodeComponent' | 'encode';
 
 interface IUrlEncoderState {
     mode: UrlEncoderMode;
@@ -14,7 +14,7 @@ interface IUrlEncoderState {
 const UrlEncoder: React.FunctionComponent = () => {
 
     const [state, setState] = useState<IUrlEncoderState>({
-        mode: 'decode',
+        mode: 'decodeComponent',
         encodeValue: '',
         decodeValue: '',
         results: '',
@@ -24,13 +24,13 @@ const UrlEncoder: React.FunctionComponent = () => {
     let _canProcess = (mode: UrlEncoderMode, encodeValue?: string, decodeValue?: string): boolean => {
         let retVal = false;
         switch (mode) {
-            case "decode":
-            case "decodeComponent": {
+            case "decodeComponent":
+            case "decode": {
                 retVal = decodeValue ? decodeValue.trim().length > 0 : false;
                 break;
             }
-            case "encode":
-            case "encodeComponent": {
+            case "encodeComponent":
+            case "encode": {
                 retVal = encodeValue ? encodeValue.trim().length > 0 : false;
                 break;
             }
@@ -76,20 +76,20 @@ const UrlEncoder: React.FunctionComponent = () => {
             let results: string = '';
             try {
                 switch (state.mode) {
-                    case "decode": {
-                        results = decodeURI(state.decodeValue);
-                        break;
-                    }
                     case "decodeComponent": {
                         results = decodeURIComponent(state.decodeValue);
                         break;
                     }
-                    case "encode": {
-                        results = encodeURI(state.encodeValue);
+                    case "decode": {
+                        results = decodeURI(state.decodeValue);
                         break;
                     }
                     case "encodeComponent": {
                         results = encodeURIComponent(state.encodeValue);
+                        break;
+                    }
+                    case "encode": {
+                        results = encodeURI(state.encodeValue);
                         break;
                     }
                 }
@@ -113,10 +113,10 @@ const UrlEncoder: React.FunctionComponent = () => {
 
     return <>
         <Stack className="UrlEncoder" tokens={{ childrenGap: 20 }}>
-            {(state.mode === 'decode' || state.mode === 'decodeComponent') && <>
+            {(state.mode === 'decodeComponent' || state.mode === 'decode') && <>
                 <TextField label="Decode" multiline value={state.decodeValue} rows={10} onChange={_onDecodedChanged} />
             </>}
-            {(state.mode === 'encode' || state.mode === 'encodeComponent') && <>
+            {(state.mode === 'encodeComponent' || state.mode === 'encode') && <>
                 <TextField label="Encode" multiline value={state.encodeValue} rows={10} onChange={_onEncodedChanged} />
             </>}
             <TextField label="Results" multiline value={state.results} rows={10} readOnly />
@@ -127,20 +127,20 @@ const UrlEncoder: React.FunctionComponent = () => {
                     onChange={_onModeChanged}
                     options={[
                         {
-                            key: "decode",
-                            text: "Decode URI"
-                        },
-                        {
                             key: "decodeComponent",
                             text: "Decode URI Component"
                         },
                         {
-                            key: "encode",
-                            text: "Encode URI"
+                            key: "decode",
+                            text: "Decode URI"
                         },
                         {
                             key: "encodeComponent",
                             text: "Encode URI Component"
+                        },
+                        {
+                            key: "encode",
+                            text: "Encode URI"
                         }
                     ]} />
                 <PrimaryButton text="Process" disabled={!state.canProcess} onClick={_Process} />

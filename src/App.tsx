@@ -12,6 +12,7 @@ import Feedback from "./pages/Feedback/Feedback";
 import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
 import Regex from "./pages/Regex/Regex";
 import NotFound from "./pages/NotFound/NotFound";
+import TimeConverter from "./pages/TimeConverter/TimeConverter";
 
 const appTheme = createTheme({
     palette: {
@@ -74,6 +75,14 @@ const App: React.FunctionComponent = () => {
             path: "/tools/regex-tester",
             iconName: "TestBeaker",
             component: Regex,
+            showInDock: true,
+            showInMenu: true
+        },
+        {
+            title: "Time Converter",
+            path: "/tools/time-converter",
+            iconName: "WorldClock",
+            component: TimeConverter,
             showInDock: true,
             showInMenu: true
         },
