@@ -43,9 +43,7 @@ const Clock: React.FunctionComponent<any> = () => {
         })
     }
 
-    return <>
-        {time.hasClockData && <Label className="Clock">{time.hours}:{time.minutes}:{time.seconds} {time.part}</Label>}
-    </>;
+    return <Label className="Clock">{time.hasClockData && `${time.hours}:${time.minutes}:${time.seconds} ${time.part}`}</Label>;
 }
 
 export default Clock;

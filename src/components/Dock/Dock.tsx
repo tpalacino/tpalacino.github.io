@@ -13,19 +13,21 @@ interface IDockProps {
 
 const Dock: React.FunctionComponent<IDockProps> = ({ dockItems, onMenuClicked, onMenuItemClicked }) => {
     return <Stack className="Dock" horizontal horizontalAlign="stretch" tokens={{ childrenGap: 2 }}>
-        <StackItem grow>
-            <Stack horizontal tokens={{ childrenGap: 4 }}>
-                <StackItem>
-                    <DefaultButton iconProps={{ iconName: "WindowsLogo" }} onClick={onMenuClicked} title="Menu" />
-                </StackItem>
-                {dockItems.length > 0 && dockItems.map(i => (<StackItem key={i.path}>
-                    <Link to={i.path} onClick={() => onMenuItemClicked()}>
-                        <DefaultButton
-                            className={(window.location.pathname === i.path) ? "active" : ""}
-                            title={i.title}
-                            iconProps={{ iconName: i.iconName }} />
-                    </Link>
-                </StackItem>))}
+        <StackItem grow >
+            <Stack horizontal horizontalAlign="space-around" >
+                <Stack horizontal tokens={{ childrenGap: 4 }}>
+                    <StackItem>
+                        <DefaultButton iconProps={{ iconName: "WindowsLogo" }} onClick={onMenuClicked} title="Menu" />
+                    </StackItem>
+                    {dockItems.length > 0 && dockItems.map(i => (<StackItem key={i.path}>
+                        <Link to={i.path} onClick={() => onMenuItemClicked()}>
+                            <DefaultButton
+                                className={(window.location.pathname === i.path) ? "active" : ""}
+                                title={i.title}
+                                iconProps={{ iconName: i.iconName }} />
+                        </Link>
+                    </StackItem>))}
+                </Stack>
             </Stack>
         </StackItem>
         <StackItem shrink>

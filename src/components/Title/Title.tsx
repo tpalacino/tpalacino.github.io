@@ -12,7 +12,10 @@ export interface IAppRouteProps {
 
 const Title: React.FunctionComponent<IAppRouteProps> = ({ item }) => {
     
-    useEffect(() => { document.title = `Troy's Desktop - ${item.title}`; }, [item]);
+    useEffect(() => {
+        document.title = `Troy's Desktop - ${item.title}`;
+        localStorage.setItem("TroysDesktopLastPage", window.location.pathname);
+    }, [item]);
 
     return React.createElement(item.component);
 }

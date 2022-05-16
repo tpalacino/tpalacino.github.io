@@ -1,10 +1,15 @@
 .Menu {
+  --width: min(400px, 100%);
+  --width-half: calc(var(--width) / 2);
+  --width-half-offset: calc(var(--width-half) + 44px);
+  --width-neg: calc(var(--width-half-offset) * -1);
   background-color: rgb(33, 33, 33) !important;
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 50%;
+  margin-left: var(--width-neg);
   margin-bottom: 41px;
-  width: min(400px, 100%);
+  width: var(--width);
 }
 
 .Menu .MenuItem {
@@ -28,4 +33,11 @@
 
 .Menu .ms-Button-label {
   text-align: left;
+}
+
+@media (max-width: 488px) {
+  .Menu {
+    left: 0;
+    margin-left: 0;
+  }
 }

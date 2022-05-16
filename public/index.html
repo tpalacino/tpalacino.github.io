@@ -12,10 +12,14 @@
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <title>Troy's Desktop</title>
   <script type="text/javascript">
+    const lastPage = localStorage.getItem("TroysDesktopLastPage");
     var m = /\?nav=(?<nav>[^&]+)/ig.exec(window.location);
-      if (m && m.groups && m.groups.nav) {
-        window.history.replaceState(null, null, decodeURIComponent(m.groups.nav)); 
-      }
+    if (m && m.groups && m.groups.nav) {
+      window.history.replaceState(null, null, decodeURIComponent(m.groups.nav));
+    }
+    else if (lastPage) {
+      window.history.replaceState(null, null, lastPage);
+    }
   </script>
 </head>
 

@@ -1,5 +1,6 @@
 .Clock {
     height: 41px;
+    width: 77px;
     display: flex;
     align-items: center;
     margin-right: 10px;
