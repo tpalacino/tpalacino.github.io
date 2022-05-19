@@ -13,6 +13,7 @@ import UrlEncoder from "./pages/UrlEncoder/UrlEncoder";
 import Regex from "./pages/Regex/Regex";
 import NotFound from "./pages/NotFound/NotFound";
 import TimeConverter from "./pages/TimeConverter/TimeConverter";
+import Generators from "./pages/Generators/Generators";
 
 const appTheme = createTheme({
     palette: {
@@ -83,6 +84,14 @@ const App: React.FunctionComponent = () => {
             path: "/tools/time-converter",
             iconName: "WorldClock",
             component: TimeConverter,
+            showInDock: true,
+            showInMenu: true
+        },
+        {
+            title: "Generators",
+            path: "/tools/generators",
+            iconName: "Code",
+            component: Generators,
             showInDock: true,
             showInMenu: true
         },
